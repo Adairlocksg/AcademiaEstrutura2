@@ -9,15 +9,20 @@ import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import com.estruturadados.academia.database.dao.FaturaMatriculaDAO;
 import com.estruturadados.academia.database.dao.MatriculaDAO;
 import com.estruturadados.academia.database.dao.MatriculaModalidadeDAO;
 import com.estruturadados.academia.database.model.MatriculasModalidades;
+import java.awt.Color;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -25,6 +30,7 @@ import javax.swing.table.DefaultTableModel;
  * @author guilhermefrag
  */
 public class ControleDeAlunosViewController {
+    
     private Connection connection;
 
     public ControleDeAlunosViewController(Connection connection) {
@@ -86,4 +92,35 @@ public class ControleDeAlunosViewController {
             ex.printStackTrace();
         }
     }
+    
+    public void VerificaSituacaoRegular(JTextField txtSituacao, int cod_aluno) throws ParseException{
+        try {
+            FaturaMatriculaDAO faturaMatriculaDAO = new FaturaMatriculaDAO(connection);
+            List<FaturasMatricula> listaFaturas= faturaMatriculaDAO.SelectByCodAluno(cod_aluno);
+            if (listaFaturas == null){
+                txtSituacao.setText("Nenhuma Fatura Encontrada");
+                return;
+            }
+            SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+            Date todayDate = new Date();
+            
+            for (FaturasMatricula f : listaFaturas) {
+                Date dataVencimento = sdf.parse(sdf.format(f.getDataVencimento()));
+                if (f.getDataPagamento() == null && todayDate.compareTo(dataVencimento) > 0){
+                    txtSituacao.setText("Débitos Pendentes");
+                    txtSituacao.setBackground(Color.red);
+                }else {
+                    txtSituacao.setText("Situação Regular");
+                    txtSituacao.setBackground(Color.green);
+                }
+                
+                
+            }
+            
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
 }

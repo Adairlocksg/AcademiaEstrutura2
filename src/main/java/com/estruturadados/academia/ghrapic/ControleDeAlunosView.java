@@ -17,6 +17,7 @@ import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.text.ParseException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.swing.JOptionPane;
@@ -196,7 +197,11 @@ public class ControleDeAlunosView extends javax.swing.JFrame {
                 jCodigoNomeAluno.setText(aluno.getCodigoAluno() + " - " + aluno.getAluno());
                 controller.listarModalidadesMatriculas((DefaultTableModel) jTableModalidadeColumns.getModel(),aluno.getCodigoAluno());
                 controller.listarFaturas((DefaultTableModel) jTableFaturasColumns.getModel(),aluno.getCodigoAluno());
+                controller.VerificaSituacaoRegular(jSituacao, aluno.getCodigoAluno());
+                
             } catch (SQLException ex) {
+                Logger.getLogger(ControleDeAlunosView.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (ParseException ex) {
                 Logger.getLogger(ControleDeAlunosView.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
