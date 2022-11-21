@@ -11,9 +11,9 @@ import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-
+import com.estruturadados.academia.database.model.Assiduidade;
 import com.estruturadados.academia.database.dao.FaturaMatriculaDAO;
-import com.estruturadados.academia.database.dao.MatriculaDAO;
+import com.estruturadados.academia.database.dao.AssiduidadeDAO;
 import com.estruturadados.academia.database.dao.MatriculaModalidadeDAO;
 import com.estruturadados.academia.database.model.MatriculasModalidades;
 import java.awt.Color;
@@ -117,6 +117,31 @@ public class ControleDeAlunosViewController {
                 
             }
             
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    public void listarAssiduidade(DefaultTableModel modeloTabela, int cod_aluno) {
+        try {
+            AssiduidadeDAO assiduidadeDAO = new AssiduidadeDAO(connection);
+            List<Assiduidade> listaAssiduidade = assiduidadeDAO.SelectByCodAluno(cod_aluno);
+
+            if (listaAssiduidade != null) {
+                modeloTabela.setRowCount(0);
+
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+                for (Assiduidade a : listaAssiduidade) {
+                    if (a.getDataEntrada() == null){
+                        return;
+                    }else{
+                    Object[] dados = {sdf.format(a.getDataEntrada())};
+                    modeloTabela.addRow(dados);
+                    }
+                 }
+            }
 
         } catch (SQLException ex) {
             ex.printStackTrace();

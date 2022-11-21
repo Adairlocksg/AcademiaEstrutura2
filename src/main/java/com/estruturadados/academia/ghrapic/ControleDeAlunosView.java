@@ -63,6 +63,8 @@ public class ControleDeAlunosView extends javax.swing.JFrame {
         jButtonAcessarDadosMatricula = new javax.swing.JButton();
         jTableFaturas = new javax.swing.JScrollPane();
         jTableFaturasColumns = new javax.swing.JTable();
+        jTableAssiduidade = new javax.swing.JScrollPane();
+        jTableAssiduidadeColumns = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -131,6 +133,24 @@ public class ControleDeAlunosView extends javax.swing.JFrame {
             }
         ));
         jTableFaturas.setViewportView(jTableFaturasColumns);
+        if (jTableFaturasColumns.getColumnModel().getColumnCount() > 0) {
+            jTableFaturasColumns.getColumnModel().getColumn(1).setHeaderValue("Valor");
+            jTableFaturasColumns.getColumnModel().getColumn(2).setHeaderValue("Pagamento");
+            jTableFaturasColumns.getColumnModel().getColumn(3).setHeaderValue("Cancelamento");
+        }
+
+        jTableAssiduidadeColumns.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null},
+                {null},
+                {null},
+                {null}
+            },
+            new String [] {
+                "Assiduidade"
+            }
+        ));
+        jTableAssiduidade.setViewportView(jTableAssiduidadeColumns);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -138,21 +158,22 @@ public class ControleDeAlunosView extends javax.swing.JFrame {
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(FotoUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(FotoUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jTableAssiduidade, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jTableFaturas, javax.swing.GroupLayout.DEFAULT_SIZE, 540, Short.MAX_VALUE)
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                        .addGroup(layout.createSequentialGroup()
-                            .addComponent(txtCodigoAluno, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(jCodigoNomeAluno))
-                        .addComponent(jTableModalidade)
-                        .addComponent(jSituacao)
-                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                            .addComponent(jButtonAcessarDadosAluno, javax.swing.GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE)
-                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                            .addComponent(jButtonAcessarDadosMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                    .addGroup(layout.createSequentialGroup()
+                        .addComponent(txtCodigoAluno, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jCodigoNomeAluno))
+                    .addComponent(jTableModalidade)
+                    .addComponent(jSituacao)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(jButtonAcessarDadosAluno, javax.swing.GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                        .addComponent(jButtonAcessarDadosMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -175,7 +196,9 @@ public class ControleDeAlunosView extends javax.swing.JFrame {
                     .addComponent(jButtonAcessarDadosAluno, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(jButtonAcessarDadosMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(jTableFaturas, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jTableAssiduidade, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jTableFaturas, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE))
                 .addContainerGap())
         );
 
@@ -198,6 +221,7 @@ public class ControleDeAlunosView extends javax.swing.JFrame {
                 controller.listarModalidadesMatriculas((DefaultTableModel) jTableModalidadeColumns.getModel(),aluno.getCodigoAluno());
                 controller.listarFaturas((DefaultTableModel) jTableFaturasColumns.getModel(),aluno.getCodigoAluno());
                 controller.VerificaSituacaoRegular(jSituacao, aluno.getCodigoAluno());
+                controller.listarAssiduidade((DefaultTableModel) jTableAssiduidadeColumns.getModel(), aluno.getCodigoAluno());
                 
             } catch (SQLException ex) {
                 Logger.getLogger(ControleDeAlunosView.class.getName()).log(Level.SEVERE, null, ex);
@@ -269,6 +293,8 @@ public class ControleDeAlunosView extends javax.swing.JFrame {
     private javax.swing.JTextField jCodigoNomeAluno;
     private javax.swing.JTextField jSituacao;
     private javax.swing.JSpinner jSpinner1;
+    private javax.swing.JScrollPane jTableAssiduidade;
+    private javax.swing.JTable jTableAssiduidadeColumns;
     private javax.swing.JScrollPane jTableFaturas;
     private javax.swing.JTable jTableFaturasColumns;
     private javax.swing.JScrollPane jTableModalidade;

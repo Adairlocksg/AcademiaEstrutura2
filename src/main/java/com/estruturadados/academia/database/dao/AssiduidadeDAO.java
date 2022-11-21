@@ -9,7 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.estruturadados.academia.database.model.Assiduidade;
-import com.estruturadados.academia.database.model.Usuario;
+import com.estruturadados.academia.database.model.FaturasMatricula;
+import com.estruturadados.academia.database.model.Assiduidade;
 
 // Só vai select, insert e delete
 public class AssiduidadeDAO extends SistemaDAO{
@@ -18,16 +19,21 @@ public class AssiduidadeDAO extends SistemaDAO{
     private String select = "select * from public.assiduidade";
     private String insert = "insert into public.assiduidade (codigo_matricula, data_entrada) values (?, ?);";
     private String delete = "delete from public.assiduidade where codigo_matricula = ?;";
+    private String selectByCodAluno = "select data_entrada\n" +
+                                        "from assiduidade a \n" +
+                                        "where codigo_matricula = (select codigo_matricula from matriculas m where codigo_aluno = ?)";
     
     private PreparedStatement pstSelect;
-	private PreparedStatement pstInsert;
-	private PreparedStatement pstDelete;
-
+    private PreparedStatement pstInsert;
+    private PreparedStatement pstDelete;
+    private PreparedStatement pstSelectByCodAluno;
+    
     public AssiduidadeDAO(Connection conexao) throws SQLException {
         this.conexao = conexao;
         pstSelect = this.conexao.prepareStatement(select);
         pstInsert = this.conexao.prepareStatement(insert);
         pstDelete = this.conexao.prepareStatement(delete);
+        pstSelectByCodAluno = this.conexao.prepareStatement(selectByCodAluno);    
     }
     
     @Override
@@ -66,16 +72,34 @@ public class AssiduidadeDAO extends SistemaDAO{
         }
         return arlAssiduidade;
     }
+    
+    public List<Assiduidade> SelectByCodAluno(int cod_aluno) throws SQLException {
+        pstSelectByCodAluno.setInt(1, cod_aluno);
+        ResultSet resultado = pstSelectByCodAluno.executeQuery();
+        List<Assiduidade> lista = new ArrayList<Assiduidade>();
 
-    @Override
-    public Usuario SelectWithCondition(Object param) throws SQLException {
-        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+        while(resultado.next()){
+            Assiduidade a = new Assiduidade();
+            
+            a.setDataEntrada(resultado.getDate("data_entrada"));
+            lista.add(a);
+        }
+
+        return lista;
+    
     }
 
     @Override
     public long Update(Object param, Object param2) {
         throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
     }
+
+    @Override
+    public Object SelectWithCondition(Object param) throws SQLException {
+        throw new UnsupportedOperationException("Not supported yet."); // Generated from nbfs://nbhost/SystemFileSystem/Templates/Classes/Code/GeneratedMethodBody
+    }
+    
+    
 
 }
 
