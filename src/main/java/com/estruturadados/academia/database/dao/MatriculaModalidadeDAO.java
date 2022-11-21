@@ -18,18 +18,23 @@ public class MatriculaModalidadeDAO extends SistemaDAO{
     private String insert = "insert into public.matriculas_modalidades (codigo_matricula, modalidade, graduacao, plano, data_inicio, data_fim) values ( ?, ?, ?, ?, ?, ?);";
     private String update = "update public.matriculas_modalidades set data_fim = ? where codigo_matricula = ? and modalidade = ?;";
     private String delete = "delete from public.matriculas_modalidades where codigo_matricula = ? ;";
-
+    private String selectByCodAluno = "select modalidade,graduacao,plano,data_inicio,data_fim \n" +
+                                        "from matriculas_modalidades mm \n" +
+                                        "where codigo_matricula = (select codigo_matricula from matriculas m where codigo_aluno = ?)";
+    
     private PreparedStatement pstSelect;
 	private PreparedStatement pstInsert;
 	private PreparedStatement pstUpdate;
 	private PreparedStatement pstDelete;
-    
+        private PreparedStatement pstSelectByCodAluno;
+        
     public MatriculaModalidadeDAO(Connection conexao) throws SQLException {
         this.conexao = conexao;
         pstSelect = this.conexao.prepareStatement(select);
         pstInsert = this.conexao.prepareStatement(insert);
         pstUpdate = this.conexao.prepareStatement(update);
         pstDelete = this.conexao.prepareStatement(delete);
+        pstSelectByCodAluno = this.conexao.prepareStatement(selectByCodAluno);
     }
     @Override
     public long Delete(Object param) {
@@ -41,6 +46,25 @@ public class MatriculaModalidadeDAO extends SistemaDAO{
             e.printStackTrace();
         }
         return 0;
+    }
+    
+    public List<MatriculasModalidades> SelectByCodAluno(int cod_aluno) throws SQLException {
+        pstSelectByCodAluno.setInt(1, cod_aluno);
+        ResultSet resultado = pstSelectByCodAluno.executeQuery();
+        List<MatriculasModalidades> lista = new ArrayList<MatriculasModalidades>();
+
+        while(resultado.next()){
+            MatriculasModalidades mm = new MatriculasModalidades();
+            mm.setModalidade(resultado.getString("modalidade"));
+            mm.setGraduacao(resultado.getString("graduacao"));
+            mm.setPlano(resultado.getString("plano"));
+            mm.setDataInicio(resultado.getDate("data_inicio"));
+            mm.setDataFim(resultado.getDate("data_fim"));
+            lista.add(mm);
+        }
+
+        return lista;
+    
     }
 
     @Override

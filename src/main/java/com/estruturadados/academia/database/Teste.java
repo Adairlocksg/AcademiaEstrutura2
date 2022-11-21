@@ -12,13 +12,7 @@ import java.util.List;
 public class Teste {
 
     public static void main(String[] args) throws SQLException {
-        Connection connection = ConnectionFactory.getConnection(
-                "localhost",
-                "5432",
-                "public",
-                "postgres",
-                "mananger"
-        );
+        Connection connection = ConnectionFactory.getConnection();
         if (connection != null) {
             System.out.println("CONECTADO");
 

@@ -69,7 +69,7 @@ public class MainView extends javax.swing.JFrame {
 
     public void conectarBanco() {
         try {
-            connection = ConnectionFactory.getConnection("localhost", "5432", "public", "postgres", "mananger");
+            connection = ConnectionFactory.getConnection();
         } catch (SQLException ex) {
             ex.printStackTrace();
         }
@@ -101,6 +101,7 @@ public class MainView extends javax.swing.JFrame {
                 g.setColor(Color.WHITE);
             }
         };
+        jButton1 = new javax.swing.JButton();
         jMenuBarTelaPrincipal = new javax.swing.JMenuBar();
         jMenuSistema = new javax.swing.JMenu();
         jMenuItemUsuarios = new javax.swing.JMenuItem();
@@ -115,6 +116,7 @@ public class MainView extends javax.swing.JFrame {
         jMenuProcessos = new javax.swing.JMenu();
         jMenuItemFatura = new javax.swing.JMenuItem();
         jMenuUtilitarios = new javax.swing.JMenu();
+        jMenuControleDeAlunos = new javax.swing.JMenu();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -136,6 +138,8 @@ public class MainView extends javax.swing.JFrame {
             jDesktopPanelTelaPrincipalLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGap(0, 477, Short.MAX_VALUE)
         );
+
+        jButton1.setText("jButton1");
 
         jMenuSistema.setText("Sistema");
 
@@ -215,6 +219,18 @@ public class MainView extends javax.swing.JFrame {
         jMenuUtilitarios.setText("Utilitários");
         jMenuBarTelaPrincipal.add(jMenuUtilitarios);
 
+        jMenuControleDeAlunos.setText("Controle de Alunos");
+        jMenuControleDeAlunos.addMenuListener(new javax.swing.event.MenuListener() {
+            public void menuCanceled(javax.swing.event.MenuEvent evt) {
+            }
+            public void menuDeselected(javax.swing.event.MenuEvent evt) {
+                jMenuControleDeAlunosMenuDeselected(evt);
+            }
+            public void menuSelected(javax.swing.event.MenuEvent evt) {
+            }
+        });
+        jMenuBarTelaPrincipal.add(jMenuControleDeAlunos);
+
         setJMenuBar(jMenuBarTelaPrincipal);
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
@@ -288,6 +304,10 @@ public class MainView extends javax.swing.JFrame {
         tela.setVisible(true);
     }//GEN-LAST:event_jMenuItemMatriculaActionPerformed
 
+    private void jMenuControleDeAlunosMenuDeselected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_jMenuControleDeAlunosMenuDeselected
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuControleDeAlunosMenuDeselected
+
     /**
      * @param args the command line arguments
      */
@@ -324,9 +344,11 @@ public class MainView extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton jButton1;
     private javax.swing.JDesktopPane jDesktopPanelTelaPrincipal;
     private javax.swing.JMenuBar jMenuBarTelaPrincipal;
     private javax.swing.JMenu jMenuCadastro;
+    private javax.swing.JMenu jMenuControleDeAlunos;
     private javax.swing.JMenu jMenuFinanceiro;
     private javax.swing.JMenuItem jMenuItemAluno;
     private javax.swing.JMenuItem jMenuItemFatura;
