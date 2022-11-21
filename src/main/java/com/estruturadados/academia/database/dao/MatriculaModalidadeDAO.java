@@ -23,10 +23,10 @@ public class MatriculaModalidadeDAO extends SistemaDAO{
                                         "where codigo_matricula = (select codigo_matricula from matriculas m where codigo_aluno = ?)";
     
     private PreparedStatement pstSelect;
-	private PreparedStatement pstInsert;
-	private PreparedStatement pstUpdate;
-	private PreparedStatement pstDelete;
-        private PreparedStatement pstSelectByCodAluno;
+    private PreparedStatement pstInsert;
+    private PreparedStatement pstUpdate;
+    private PreparedStatement pstDelete;
+    private PreparedStatement pstSelectByCodAluno;
         
     public MatriculaModalidadeDAO(Connection conexao) throws SQLException {
         this.conexao = conexao;

@@ -4,14 +4,13 @@
  */
 package com.estruturadados.academia.controller;
 
-import com.estruturadados.academia.database.dao.AlunoDAO;
-import com.estruturadados.academia.database.model.Aluno;
+import com.estruturadados.academia.database.model.FaturasMatricula;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 
-import com.estruturadados.academia.database.dao.AlunoDAO;
+import com.estruturadados.academia.database.dao.FaturaMatriculaDAO;
 import com.estruturadados.academia.database.dao.MatriculaDAO;
 import com.estruturadados.academia.database.dao.MatriculaModalidadeDAO;
 import com.estruturadados.academia.database.model.MatriculasModalidades;
@@ -19,8 +18,6 @@ import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.swing.table.DefaultTableModel;
 
 /**
@@ -51,6 +48,36 @@ public class ControleDeAlunosViewController {
                     }else{
                     Object[] dados = {mm.getModalidade(), mm.getGraduacao(), mm.getPlano(), sdf.format(mm.getDataInicio()), sdf.format(mm.getDataFim())};
                     modeloTabela.addRow(dados);
+                    }
+                 }
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    public void listarFaturas(DefaultTableModel modeloTabela, int cod_aluno) {
+        try {
+            FaturaMatriculaDAO faturaMatriculaDAO = new FaturaMatriculaDAO(connection);
+            List<FaturasMatricula> listaFaturas= faturaMatriculaDAO.SelectByCodAluno(cod_aluno);
+
+            if (listaFaturas != null) {
+                modeloTabela.setRowCount(0);
+
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+                for (FaturasMatricula f : listaFaturas) {
+                    if (f.getDataPagamento() == null){
+                        Object[] dados = {sdf.format(f.getDataVencimento()), f.getValor()};
+                        modeloTabela.addRow(dados);
+                    }
+                    else if(f.getDataCancelamento() == null){
+                        Object[] dados = {sdf.format(f.getDataVencimento()), f.getValor(), sdf.format(f.getDataPagamento())};
+                        modeloTabela.addRow(dados);
+                    }else{
+                    Object[] dados = {sdf.format(f.getDataVencimento()), f.getValor(), sdf.format(f.getDataPagamento()), sdf.format(f.getDataCancelamento())};
+                        modeloTabela.addRow(dados);
                     }
                  }
             }

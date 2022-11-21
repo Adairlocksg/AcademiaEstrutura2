@@ -58,6 +58,10 @@ public class ControleDeAlunosView extends javax.swing.JFrame {
         jTableModalidadeColumns = new javax.swing.JTable();
         jCodigoNomeAluno = new javax.swing.JTextField();
         jSituacao = new javax.swing.JTextField();
+        jButtonAcessarDadosAluno = new javax.swing.JButton();
+        jButtonAcessarDadosMatricula = new javax.swing.JButton();
+        jTableFaturas = new javax.swing.JScrollPane();
+        jTableFaturasColumns = new javax.swing.JTable();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -97,6 +101,9 @@ public class ControleDeAlunosView extends javax.swing.JFrame {
             }
         ));
         jTableModalidade.setViewportView(jTableModalidadeColumns);
+        if (jTableModalidadeColumns.getColumnModel().getColumnCount() > 0) {
+            jTableModalidadeColumns.getColumnModel().getColumn(4).setHeaderValue("Data Fim");
+        }
 
         jSituacao.setFont(new java.awt.Font("Liberation Sans", 0, 24)); // NOI18N
         jSituacao.setHorizontalAlignment(javax.swing.JTextField.CENTER);
@@ -107,6 +114,23 @@ public class ControleDeAlunosView extends javax.swing.JFrame {
             }
         });
 
+        jButtonAcessarDadosAluno.setText("Acessar dados do Aluno");
+
+        jButtonAcessarDadosMatricula.setText("Acessar dados da Matricula");
+
+        jTableFaturasColumns.setModel(new javax.swing.table.DefaultTableModel(
+            new Object [][] {
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null},
+                {null, null, null, null}
+            },
+            new String [] {
+                "Vencimento", "Valor", "Pagamento", "Cancelamento"
+            }
+        ));
+        jTableFaturas.setViewportView(jTableFaturasColumns);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -116,12 +140,18 @@ public class ControleDeAlunosView extends javax.swing.JFrame {
                 .addComponent(FotoUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addGroup(layout.createSequentialGroup()
-                        .addComponent(txtCodigoAluno, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                        .addComponent(jCodigoNomeAluno))
-                    .addComponent(jTableModalidade, javax.swing.GroupLayout.DEFAULT_SIZE, 540, Short.MAX_VALUE)
-                    .addComponent(jSituacao))
+                    .addComponent(jTableFaturas, javax.swing.GroupLayout.DEFAULT_SIZE, 540, Short.MAX_VALUE)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addGroup(layout.createSequentialGroup()
+                            .addComponent(txtCodigoAluno, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(jCodigoNomeAluno))
+                        .addComponent(jTableModalidade)
+                        .addComponent(jSituacao)
+                        .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                            .addComponent(jButtonAcessarDadosAluno, javax.swing.GroupLayout.DEFAULT_SIZE, 261, Short.MAX_VALUE)
+                            .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                            .addComponent(jButtonAcessarDadosMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE))))
                 .addContainerGap())
         );
         layout.setVerticalGroup(
@@ -139,7 +169,13 @@ public class ControleDeAlunosView extends javax.swing.JFrame {
                         .addComponent(jTableModalidade, javax.swing.GroupLayout.PREFERRED_SIZE, 96, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jSituacao, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(285, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                    .addComponent(jButtonAcessarDadosAluno, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jButtonAcessarDadosMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(jTableFaturas, javax.swing.GroupLayout.DEFAULT_SIZE, 230, Short.MAX_VALUE)
+                .addContainerGap())
         );
 
         pack();
@@ -159,6 +195,7 @@ public class ControleDeAlunosView extends javax.swing.JFrame {
                 
                 jCodigoNomeAluno.setText(aluno.getCodigoAluno() + " - " + aluno.getAluno());
                 controller.listarModalidadesMatriculas((DefaultTableModel) jTableModalidadeColumns.getModel(),aluno.getCodigoAluno());
+                controller.listarFaturas((DefaultTableModel) jTableFaturasColumns.getModel(),aluno.getCodigoAluno());
             } catch (SQLException ex) {
                 Logger.getLogger(ControleDeAlunosView.class.getName()).log(Level.SEVERE, null, ex);
             }
@@ -222,9 +259,13 @@ public class ControleDeAlunosView extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JPanel FotoUsuario;
+    private javax.swing.JButton jButtonAcessarDadosAluno;
+    private javax.swing.JButton jButtonAcessarDadosMatricula;
     private javax.swing.JTextField jCodigoNomeAluno;
     private javax.swing.JTextField jSituacao;
     private javax.swing.JSpinner jSpinner1;
+    private javax.swing.JScrollPane jTableFaturas;
+    private javax.swing.JTable jTableFaturasColumns;
     private javax.swing.JScrollPane jTableModalidade;
     private javax.swing.JTable jTableModalidadeColumns;
     private javax.swing.JTextField txtCodigoAluno;
