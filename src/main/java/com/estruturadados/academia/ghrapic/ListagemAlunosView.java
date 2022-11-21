@@ -43,7 +43,6 @@ public class ListagemAlunosView extends javax.swing.JInternalFrame {
         jPanel1 = new javax.swing.JPanel();
         jScrollPane1 = new javax.swing.JScrollPane();
         tblDados = new javax.swing.JTable();
-        btnListar = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
 
         setBorder(null);
@@ -91,13 +90,6 @@ public class ListagemAlunosView extends javax.swing.JInternalFrame {
             tblDados.getColumnModel().getColumn(0).setMaxWidth(50);
         }
 
-        btnListar.setText("Listar");
-        btnListar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnListarActionPerformed(evt);
-            }
-        });
-
         btnExcluir.setText("Voltar");
         btnExcluir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -113,8 +105,6 @@ public class ListagemAlunosView extends javax.swing.JInternalFrame {
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnListar)
-                        .addGap(12, 12, 12)
                         .addComponent(btnExcluir))
                     .addGroup(jPanel1Layout.createSequentialGroup()
                         .addContainerGap()
@@ -127,9 +117,7 @@ public class ListagemAlunosView extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 167, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnExcluir)
-                    .addComponent(btnListar))
+                .addComponent(btnExcluir)
                 .addContainerGap(18, Short.MAX_VALUE))
         );
 
@@ -152,11 +140,6 @@ public class ListagemAlunosView extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btnListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListarActionPerformed
-        // TODO add your handling code here:
-        controller.listarAlunos((DefaultTableModel) tblDados.getModel(), codAluno);
-    }//GEN-LAST:event_btnListarActionPerformed
     
      public void conectarBanco() {
         try {
@@ -182,7 +165,6 @@ public class ListagemAlunosView extends javax.swing.JInternalFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnExcluir;
-    private javax.swing.JButton btnListar;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable tblDados;

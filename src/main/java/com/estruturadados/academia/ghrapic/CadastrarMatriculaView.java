@@ -38,22 +38,6 @@ public class CadastrarMatriculaView extends javax.swing.JInternalFrame {
         controller.carregarAlunos(jComboBoxAlunos);
         txtDataMatricula.setText(sdf.format(new Date()));
 
-        if (this.matricula != null) {
-            carregarDadosEdicao(this.matricula);
-        }
-    }
-
-    private void carregarDadosEdicao(Matricula matricula) {
-        isEdicao = true;
-        for (int i = 0; i < jComboBoxAlunos.getItemCount(); i++) {
-            String text = jComboBoxAlunos.getItemAt(i).toString();
-            if (matricula.getAluno().getAluno().equals(jComboBoxAlunos.getItemAt(i).toString())) {
-                jComboBoxAlunos.setSelectedIndex(i);
-                break;
-            }
-        }
-        txtDataMatricula.setText(sdf.format(matricula.getDataMatricula()));
-        jSpinnerDiaVencimento.setValue(matricula.getDiaVencimento());
     }
 
     /**
@@ -291,39 +275,6 @@ public class CadastrarMatriculaView extends javax.swing.JInternalFrame {
 
     private void btnGravarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGravarActionPerformed
         // TODO add your handling code here:
-        if (Integer.parseInt(jSpinnerDiaVencimento.getValue().toString()) == 0) {
-            JOptionPane.showMessageDialog(null, "Por favor informe o dia de vencimento.", "Atenção", JOptionPane.WARNING_MESSAGE);
-            jSpinnerDiaVencimento.requestFocus();
-            return;
-        }
-
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-
-        Aluno aluno = (Aluno) jComboBoxAlunos.getSelectedItem();
-        Matricula matriculaEditado = new Matricula();
-        matriculaEditado.setAluno(aluno);
-        try {
-            matriculaEditado.setDataMatricula(sdf.parse(txtDataMatricula.getText()));
-            matriculaEditado.setDiaVencimento(Integer.parseInt(jSpinnerDiaVencimento.getValue().toString()));
-
-            if (!isEdicao) {
-                if (controller.cadastrarMatricula(matriculaEditado)) {
-                    JOptionPane.showMessageDialog(null, "Matricula cadastrada com sucesso.", "Atenção", JOptionPane.INFORMATION_MESSAGE);
-                } else {
-                    JOptionPane.showMessageDialog(null, "Erro ao cadastrar matrícula.", "Atenção", JOptionPane.ERROR_MESSAGE);
-                }
-            } else {
-                if (controller.atualizarMatricula(matricula, matriculaEditado)) {
-                    JOptionPane.showMessageDialog(null, "Matricula atualizada com sucesso.", "Atenção", JOptionPane.INFORMATION_MESSAGE);
-                } else {
-                    JOptionPane.showMessageDialog(null, "Erro ao atualizar matrícula.", "Atenção", JOptionPane.ERROR_MESSAGE);
-                }
-            }
-        } catch (ParseException ex) {
-            ex.printStackTrace();
-        }
-
-        this.dispose();
     }//GEN-LAST:event_btnGravarActionPerformed
 
 

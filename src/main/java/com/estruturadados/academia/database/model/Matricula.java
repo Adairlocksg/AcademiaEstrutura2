@@ -5,7 +5,7 @@ import java.util.Date;
 public class Matricula {
 
     private int codigoMatricula;
-    private Aluno aluno;
+    private int codigoAluno;
     private Date dataMatricula;
     private int diaVencimento;
     private Date dataEncerramento;
@@ -16,7 +16,7 @@ public class Matricula {
 
     public Matricula(int codigoMatricula, Aluno aluno, Date dataMatricula, int diaVencimento, Date dataEncerramento) {
         this.codigoMatricula = codigoMatricula;
-        this.aluno = aluno;
+        this.codigoAluno = codigoAluno;
         this.dataMatricula = dataMatricula;
         this.diaVencimento = diaVencimento;
         this.dataEncerramento = dataEncerramento;
@@ -30,12 +30,12 @@ public class Matricula {
         this.codigoMatricula = codigoMatricula;
     }
 
-    public Aluno getAluno() {
-        return aluno;
+    public int getCodigoAluno() {
+        return codigoAluno;
     }
 
-    public void setAluno(Aluno aluno) {
-        this.aluno = aluno;
+    public void setCodigoAluno(int codigoAluno) {
+        this.codigoAluno = codigoAluno;
     }
 
     public Date getDataMatricula() {
@@ -64,7 +64,7 @@ public class Matricula {
 
     @Override
     public String toString() {
-        return "Matricula{" + "codigoMatricula=" + codigoMatricula + ", aluno=" + aluno + ", dataMatricula=" + dataMatricula + ", diaVencimento=" + diaVencimento + ", dataEncerramento=" + dataEncerramento + '}';
+        return "Matricula{" + "codigoMatricula=" + codigoMatricula + ", aluno=" + codigoAluno + ", dataMatricula=" + dataMatricula + ", diaVencimento=" + diaVencimento + ", dataEncerramento=" + dataEncerramento + '}';
     }
 
 }

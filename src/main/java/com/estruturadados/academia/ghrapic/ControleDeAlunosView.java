@@ -137,6 +137,11 @@ public class ControleDeAlunosView extends javax.swing.JFrame {
         });
 
         jButtonAcessarDadosMatricula.setText("Acessar dados da Matricula");
+        jButtonAcessarDadosMatricula.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAcessarDadosMatriculaActionPerformed(evt);
+            }
+        });
 
         jTableFaturasColumns.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
@@ -275,6 +280,16 @@ public class ControleDeAlunosView extends javax.swing.JFrame {
     private void jButtonAcessarDadosAlunoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonAcessarDadosAlunoMouseClicked
 
     }//GEN-LAST:event_jButtonAcessarDadosAlunoMouseClicked
+
+    private void jButtonAcessarDadosMatriculaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAcessarDadosMatriculaActionPerformed
+        // TODO add your handling code here:
+        ListagemMatriculasView listagemMatriculaView = new ListagemMatriculasView(codAluno);
+        JDesktopPane desk = new JDesktopPane();
+        this.setContentPane(desk);
+        desk.add(listagemMatriculaView);
+        listagemMatriculaView.setVisible(true);
+        
+    }//GEN-LAST:event_jButtonAcessarDadosMatriculaActionPerformed
     
     public void conectarBanco() {
         try {

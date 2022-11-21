@@ -5,9 +5,11 @@
 package com.estruturadados.academia.ghrapic;
 
 import com.estruturadados.academia.controller.ListagemMatriculasViewController;
+import com.estruturadados.academia.database.ConnectionFactory;
 import com.estruturadados.academia.database.model.Aluno;
 import com.estruturadados.academia.database.model.Matricula;
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.logging.Level;
@@ -26,8 +28,10 @@ public class ListagemMatriculasView extends javax.swing.JInternalFrame {
      */
     private Connection connection;
     private ListagemMatriculasViewController controller;
-
-    public ListagemMatriculasView(Connection connection) {
+    private int codAluno;
+    public ListagemMatriculasView(int codAluno) {
+        this.codAluno = codAluno;
+        this.conectarBanco();
         initComponents();
         this.connection = connection;
         controller = new ListagemMatriculasViewController(connection);
@@ -46,9 +50,6 @@ public class ListagemMatriculasView extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         jTabledDadosMatriculas = new javax.swing.JTable();
         jButtonExcluir = new javax.swing.JButton();
-        btnEditar = new javax.swing.JButton();
-        btnCadastrar = new javax.swing.JButton();
-        btnListar = new javax.swing.JButton();
 
         setClosable(true);
         setTitle("Matrículas");
@@ -104,31 +105,10 @@ public class ListagemMatriculasView extends javax.swing.JInternalFrame {
             jTabledDadosMatriculas.getColumnModel().getColumn(5).setPreferredWidth(50);
         }
 
-        jButtonExcluir.setText("Excluir");
+        jButtonExcluir.setText("Voltar");
         jButtonExcluir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 jButtonExcluirActionPerformed(evt);
-            }
-        });
-
-        btnEditar.setText("Editar");
-        btnEditar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEditarActionPerformed(evt);
-            }
-        });
-
-        btnCadastrar.setText("Cadastrar");
-        btnCadastrar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCadastrarActionPerformed(evt);
-            }
-        });
-
-        btnListar.setText("Listar");
-        btnListar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnListarActionPerformed(evt);
             }
         });
 
@@ -141,12 +121,6 @@ public class ListagemMatriculasView extends javax.swing.JInternalFrame {
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 831, Short.MAX_VALUE)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanelListagemMatriculasLayout.createSequentialGroup()
                         .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(btnListar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnCadastrar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(btnEditar)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(jButtonExcluir)))
                 .addContainerGap())
         );
@@ -156,11 +130,7 @@ public class ListagemMatriculasView extends javax.swing.JInternalFrame {
                 .addContainerGap()
                 .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 241, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(jPanelListagemMatriculasLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(jButtonExcluir)
-                    .addComponent(btnEditar)
-                    .addComponent(btnCadastrar)
-                    .addComponent(btnListar))
+                .addComponent(jButtonExcluir)
                 .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
 
@@ -183,74 +153,29 @@ public class ListagemMatriculasView extends javax.swing.JInternalFrame {
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
-
-    private void btnListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListarActionPerformed
-        // TODO add your handling code here:
-        controller.listarMatriculas((DefaultTableModel) jTabledDadosMatriculas.getModel());
-    }//GEN-LAST:event_btnListarActionPerformed
-
+    
+    public void conectarBanco() {
+        try {
+            connection = ConnectionFactory.getConnection();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
     private void formInternalFrameActivated(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameActivated
         // TODO add your handling code here:
-        controller.listarMatriculas((DefaultTableModel) jTabledDadosMatriculas.getModel());
+        controller.listarMatriculas((DefaultTableModel) jTabledDadosMatriculas.getModel(), codAluno);
     }//GEN-LAST:event_formInternalFrameActivated
-
-    private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
-        // TODO add your handling code here:
-        CadastrarMatriculaView tela = new CadastrarMatriculaView(connection, null);
-        this.getParent().add(tela);
-        tela.setVisible(true);
-    }//GEN-LAST:event_btnCadastrarActionPerformed
-
-    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        // TODO add your handling code here:
-        if (jTabledDadosMatriculas.getSelectedRow() != -1) {
-            try {
-                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-                Aluno aluno = new Aluno();
-                aluno.setCodigoAluno(Integer.parseInt(jTabledDadosMatriculas.getValueAt(jTabledDadosMatriculas.getSelectedRow(), 1).toString()));
-                aluno.setAluno(jTabledDadosMatriculas.getValueAt(jTabledDadosMatriculas.getSelectedRow(), 2).toString());
-
-                Matricula matricula = new Matricula();
-                matricula.setCodigoMatricula(Integer.parseInt(jTabledDadosMatriculas.getValueAt(jTabledDadosMatriculas.getSelectedRow(), 0).toString()));
-                matricula.setAluno(aluno);
-                matricula.setDataMatricula(sdf.parse(jTabledDadosMatriculas.getValueAt(jTabledDadosMatriculas.getSelectedRow(), 3).toString()));
-                matricula.setDiaVencimento(Integer.parseInt(jTabledDadosMatriculas.getValueAt(jTabledDadosMatriculas.getSelectedRow(), 4).toString()));
-
-                if (jTabledDadosMatriculas.getValueAt(jTabledDadosMatriculas.getSelectedRow(), 5) != null) {
-                    matricula.setDataEncerramento(sdf.parse(jTabledDadosMatriculas.getValueAt(jTabledDadosMatriculas.getSelectedRow(), 5).toString()));
-                }
-                CadastrarMatriculaView tela = new CadastrarMatriculaView(connection, matricula);
-                this.getParent().add(tela);
-                tela.setVisible(true);
-            } catch (ParseException ex) {
-                ex.printStackTrace();
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "Por favor selecione uma matrícula.", "Atenção", JOptionPane.WARNING_MESSAGE);
-        }
-    }//GEN-LAST:event_btnEditarActionPerformed
 
     private void jButtonExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonExcluirActionPerformed
         // TODO add your handling code here:
-        if (jTabledDadosMatriculas.getSelectedRow() != -1) {
-            int codigoMatricula = Integer.parseInt(jTabledDadosMatriculas.getValueAt(jTabledDadosMatriculas.getSelectedRow(), 0).toString());
-
-            if (controller.deletarMatriuclar(codigoMatricula)) {
-                JOptionPane.showMessageDialog(null, "Matrícula excluída com sucesso.", "Atenção", JOptionPane.INFORMATION_MESSAGE);
-            } else {
-                JOptionPane.showMessageDialog(null, "Erro ao excluir matrícula.", "Atenção", JOptionPane.ERROR_MESSAGE);
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "Por favor selecione uma matrícula.", "Atenção", JOptionPane.WARNING_MESSAGE);
-        }
-        controller.listarMatriculas((DefaultTableModel) jTabledDadosMatriculas.getModel());
+        ControleDeAlunosView cdav = new ControleDeAlunosView();
+        this.getParent().setVisible(false);
+        cdav.setVisible(true);
     }//GEN-LAST:event_jButtonExcluirActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnCadastrar;
-    private javax.swing.JButton btnEditar;
-    private javax.swing.JButton btnListar;
     private javax.swing.JButton jButtonExcluir;
     private javax.swing.JPanel jPanelListagemMatriculas;
     private javax.swing.JScrollPane jScrollPane1;

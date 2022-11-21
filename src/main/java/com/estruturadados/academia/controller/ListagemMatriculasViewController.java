@@ -24,17 +24,17 @@ public class ListagemMatriculasViewController {
         this.connection = connection;
     }
 
-    public void listarMatriculas(DefaultTableModel modeloTabela) {
+    public void listarMatriculas(DefaultTableModel modeloTabela, int codAluno) {
         try {
             SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
             MatriculaDAO matriculaDAO = new MatriculaDAO(connection);
-            List<Matricula> listaMatriculas = matriculaDAO.Select();
+            List<Matricula> listaMatriculas = matriculaDAO.SelectMatriculaGeral(codAluno);
 
             if (listaMatriculas != null) {
                 modeloTabela.setRowCount(0);
 
                 for (Matricula m : listaMatriculas) {
-                    Object[] dados = {m.getCodigoMatricula(), m.getAluno().getCodigoAluno(), m.getAluno().getAluno(), sdf.format(m.getDataMatricula()),
+                    Object[] dados = {m.getCodigoMatricula(), m.getCodigoAluno(), sdf.format(m.getDataMatricula()),
                         m.getDiaVencimento(), m.getDataEncerramento()};
                     modeloTabela.addRow(dados);
                 }
