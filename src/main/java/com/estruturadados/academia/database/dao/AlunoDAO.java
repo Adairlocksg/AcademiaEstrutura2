@@ -1,7 +1,9 @@
 package com.estruturadados.academia.database.dao;
 
 import com.estruturadados.academia.database.model.Aluno;
+import com.estruturadados.academia.database.model.AlunoGeral;
 import com.estruturadados.academia.database.model.Cidade;
+import com.estruturadados.academia.database.model.FaturasMatricula;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -22,12 +24,20 @@ public class AlunoDAO extends SistemaDAO {
             + "SET aluno=?, data_nascimento=?, sexo=?, telefone=?, celular=?, email=?, observacao=?, endereco=?, numero=?, complemento=?, bairro=?, cidade=?, estado=?, pais=?, cep=? "
             + "WHERE codigo_aluno=?;";
     private String delete = "DELETE FROM public.alunos WHERE codigo_aluno=?;";
-
+    private String selectByCodAluno = "select a.codigo_aluno, a.aluno, mm.modalidade, mm.graduacao, mm.plano, mm.data_inicio,\n" +
+                                        "mm.data_fim from alunos a\n" +
+                                        "inner join matriculas m on (m.codigo_aluno = a.codigo_aluno)\n" +
+                                        "inner join matriculas_modalidades mm on (mm.codigo_matricula = m.codigo_matricula)\n" +
+                                        "where a.codigo_aluno = ?;";
+    
+    
     private PreparedStatement pstSelect;
     private PreparedStatement pstSelectComClasula;
     private PreparedStatement pstInsert;
     private PreparedStatement pstUpdate;
     private PreparedStatement pstDelete;
+    private PreparedStatement pstSelectByCodAluno;
+
 
     public AlunoDAO(Connection conexao) throws SQLException {
         this.conexao = conexao;
@@ -36,6 +46,8 @@ public class AlunoDAO extends SistemaDAO {
         pstInsert = this.conexao.prepareStatement(insert);
         pstUpdate = this.conexao.prepareStatement(update);
         pstDelete = this.conexao.prepareStatement(delete);
+        pstSelectByCodAluno = this.conexao.prepareStatement(selectByCodAluno);
+
     }
 
     @Override
@@ -166,5 +178,26 @@ public class AlunoDAO extends SistemaDAO {
             aluno.setCep(rs.getString("cep"));
         }
         return aluno;
+    }
+    
+    public List<AlunoGeral> SelectByCodAluno(int cod_aluno) throws SQLException {
+        pstSelectByCodAluno.setInt(1, cod_aluno);
+        ResultSet resultado = pstSelectByCodAluno.executeQuery();
+        List<AlunoGeral> lista = new ArrayList<AlunoGeral>();
+
+        while(resultado.next()){
+            AlunoGeral fm = new AlunoGeral();
+            
+            fm.setCodigoAluno(resultado.getInt("codigo_aluno"));
+            fm.setAluno(resultado.getString("aluno"));
+            fm.setModalidade(resultado.getString("modalidade"));
+            fm.setGraduacao(resultado.getString("graduacao"));
+            fm.setPlano(resultado.getString("plano"));
+            fm.setDataInicio(resultado.getDate("data_inicio"));
+            fm.setDataFim(resultado.getDate("data_fim"));
+          lista.add(fm);
+        }
+        return lista;
+    
     }
 }

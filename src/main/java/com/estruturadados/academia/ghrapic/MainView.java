@@ -116,7 +116,11 @@ public class MainView extends javax.swing.JFrame {
         jMenuProcessos = new javax.swing.JMenu();
         jMenuItemFatura = new javax.swing.JMenuItem();
         jMenuUtilitarios = new javax.swing.JMenu();
-        jMenuControleDeAlunos = new javax.swing.JMenu();
+        jMenuCadastro1 = new javax.swing.JMenu();
+        jMenuItemAluno1 = new javax.swing.JMenuItem();
+        jMenuItemModalidade1 = new javax.swing.JMenuItem();
+        jMenuItemGraduacao1 = new javax.swing.JMenuItem();
+        jMenuItemPlano1 = new javax.swing.JMenuItem();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         addWindowListener(new java.awt.event.WindowAdapter() {
@@ -219,17 +223,41 @@ public class MainView extends javax.swing.JFrame {
         jMenuUtilitarios.setText("Utilitários");
         jMenuBarTelaPrincipal.add(jMenuUtilitarios);
 
-        jMenuControleDeAlunos.setText("Controle de Alunos");
-        jMenuControleDeAlunos.addMenuListener(new javax.swing.event.MenuListener() {
-            public void menuCanceled(javax.swing.event.MenuEvent evt) {
-            }
-            public void menuDeselected(javax.swing.event.MenuEvent evt) {
-                jMenuControleDeAlunosMenuDeselected(evt);
-            }
-            public void menuSelected(javax.swing.event.MenuEvent evt) {
+        jMenuCadastro1.setText("Controle de Aluno");
+
+        jMenuItemAluno1.setText("Aluno");
+        jMenuItemAluno1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemAluno1ActionPerformed(evt);
             }
         });
-        jMenuBarTelaPrincipal.add(jMenuControleDeAlunos);
+        jMenuCadastro1.add(jMenuItemAluno1);
+
+        jMenuItemModalidade1.setText("Modalidade");
+        jMenuItemModalidade1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemModalidade1ActionPerformed(evt);
+            }
+        });
+        jMenuCadastro1.add(jMenuItemModalidade1);
+
+        jMenuItemGraduacao1.setText("Graduação");
+        jMenuItemGraduacao1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemGraduacao1ActionPerformed(evt);
+            }
+        });
+        jMenuCadastro1.add(jMenuItemGraduacao1);
+
+        jMenuItemPlano1.setText("Plano");
+        jMenuItemPlano1.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jMenuItemPlano1ActionPerformed(evt);
+            }
+        });
+        jMenuCadastro1.add(jMenuItemPlano1);
+
+        jMenuBarTelaPrincipal.add(jMenuCadastro1);
 
         setJMenuBar(jMenuBarTelaPrincipal);
 
@@ -271,9 +299,7 @@ public class MainView extends javax.swing.JFrame {
 
     private void jMenuItemAlunoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAlunoActionPerformed
         // TODO add your handling code here:
-        ListagemAlunosView tela = new ListagemAlunosView(connection);
-        jDesktopPanelTelaPrincipal.add(tela);
-        tela.setVisible(true);
+
     }//GEN-LAST:event_jMenuItemAlunoActionPerformed
 
     private void jMenuItemModalidadeActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemModalidadeActionPerformed
@@ -304,9 +330,23 @@ public class MainView extends javax.swing.JFrame {
         tela.setVisible(true);
     }//GEN-LAST:event_jMenuItemMatriculaActionPerformed
 
-    private void jMenuControleDeAlunosMenuDeselected(javax.swing.event.MenuEvent evt) {//GEN-FIRST:event_jMenuControleDeAlunosMenuDeselected
+    private void jMenuItemAluno1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemAluno1ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jMenuControleDeAlunosMenuDeselected
+        ControleDeAlunosView cdav = new ControleDeAlunosView();
+        cdav.setVisible(true);
+    }//GEN-LAST:event_jMenuItemAluno1ActionPerformed
+
+    private void jMenuItemModalidade1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemModalidade1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItemModalidade1ActionPerformed
+
+    private void jMenuItemGraduacao1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemGraduacao1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItemGraduacao1ActionPerformed
+
+    private void jMenuItemPlano1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jMenuItemPlano1ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jMenuItemPlano1ActionPerformed
 
     /**
      * @param args the command line arguments
@@ -348,14 +388,18 @@ public class MainView extends javax.swing.JFrame {
     private javax.swing.JDesktopPane jDesktopPanelTelaPrincipal;
     private javax.swing.JMenuBar jMenuBarTelaPrincipal;
     private javax.swing.JMenu jMenuCadastro;
-    private javax.swing.JMenu jMenuControleDeAlunos;
+    private javax.swing.JMenu jMenuCadastro1;
     private javax.swing.JMenu jMenuFinanceiro;
     private javax.swing.JMenuItem jMenuItemAluno;
+    private javax.swing.JMenuItem jMenuItemAluno1;
     private javax.swing.JMenuItem jMenuItemFatura;
     private javax.swing.JMenuItem jMenuItemGraduacao;
+    private javax.swing.JMenuItem jMenuItemGraduacao1;
     private javax.swing.JMenuItem jMenuItemMatricula;
     private javax.swing.JMenuItem jMenuItemModalidade;
+    private javax.swing.JMenuItem jMenuItemModalidade1;
     private javax.swing.JMenuItem jMenuItemPlano;
+    private javax.swing.JMenuItem jMenuItemPlano1;
     private javax.swing.JMenuItem jMenuItemSair;
     private javax.swing.JMenuItem jMenuItemUsuarios;
     private javax.swing.JMenu jMenuProcessos;

@@ -98,13 +98,44 @@
             <Property name="text" type="java.lang.String" value="Utilit&#xe1;rios"/>
           </Properties>
         </Menu>
-        <Menu class="javax.swing.JMenu" name="jMenuControleDeAlunos">
+        <Menu class="javax.swing.JMenu" name="jMenuCadastro1">
           <Properties>
-            <Property name="text" type="java.lang.String" value="Controle de Alunos"/>
+            <Property name="text" type="java.lang.String" value="Controle de Aluno"/>
           </Properties>
-          <Events>
-            <EventHandler event="menuDeselected" listener="javax.swing.event.MenuListener" parameters="javax.swing.event.MenuEvent" handler="jMenuControleDeAlunosMenuDeselected"/>
-          </Events>
+          <SubComponents>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItemAluno1">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Aluno"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemAluno1ActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItemModalidade1">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Modalidade"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemModalidade1ActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItemGraduacao1">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Gradua&#xe7;&#xe3;o"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemGraduacao1ActionPerformed"/>
+              </Events>
+            </MenuItem>
+            <MenuItem class="javax.swing.JMenuItem" name="jMenuItemPlano1">
+              <Properties>
+                <Property name="text" type="java.lang.String" value="Plano"/>
+              </Properties>
+              <Events>
+                <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jMenuItemPlano1ActionPerformed"/>
+              </Events>
+            </MenuItem>
+          </SubComponents>
         </Menu>
       </SubComponents>
     </Menu>

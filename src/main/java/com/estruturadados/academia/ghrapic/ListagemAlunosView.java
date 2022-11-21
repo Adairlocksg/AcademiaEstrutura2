@@ -5,8 +5,10 @@
 package com.estruturadados.academia.ghrapic;
 
 import com.estruturadados.academia.controller.ListagemAlunosViewController;
+import com.estruturadados.academia.database.ConnectionFactory;
 import com.estruturadados.academia.database.model.Aluno;
 import java.sql.Connection;
+import java.sql.SQLException;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -21,10 +23,11 @@ public class ListagemAlunosView extends javax.swing.JInternalFrame {
      */
     private ListagemAlunosViewController controller;
     private Connection connection;
-
-    public ListagemAlunosView(Connection connection) {
+    private int codAluno;
+    public ListagemAlunosView(int codAluno) {
         initComponents();
-        this.connection = connection;
+        this.codAluno = codAluno;
+        this.conectarBanco();
         controller = new ListagemAlunosViewController(connection);
     }
 
@@ -41,8 +44,6 @@ public class ListagemAlunosView extends javax.swing.JInternalFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         tblDados = new javax.swing.JTable();
         btnListar = new javax.swing.JButton();
-        btnCadastrar = new javax.swing.JButton();
-        btnEditar = new javax.swing.JButton();
         btnExcluir = new javax.swing.JButton();
 
         setBorder(null);
@@ -66,16 +67,18 @@ public class ListagemAlunosView extends javax.swing.JInternalFrame {
             }
         });
 
+        jPanel1.setBorder(new javax.swing.border.SoftBevelBorder(javax.swing.border.BevelBorder.RAISED));
+
         tblDados.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
 
             },
             new String [] {
-                "Código", "Aluno", "Nascimento", "Cidade"
+                "Código Aluno", "Nome", "Modalidade", "Graduação", "Plano", "Data Inicio", "Data Fim"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false
+                false, false, false, false, true, true, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -95,21 +98,7 @@ public class ListagemAlunosView extends javax.swing.JInternalFrame {
             }
         });
 
-        btnCadastrar.setText("Cadastrar");
-        btnCadastrar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCadastrarActionPerformed(evt);
-            }
-        });
-
-        btnEditar.setText("Editar");
-        btnEditar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnEditarActionPerformed(evt);
-            }
-        });
-
-        btnExcluir.setText("Excluir");
+        btnExcluir.setText("Voltar");
         btnExcluir.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 btnExcluirActionPerformed(evt);
@@ -120,18 +109,16 @@ public class ListagemAlunosView extends javax.swing.JInternalFrame {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addGap(0, 384, Short.MAX_VALUE)
-                .addComponent(btnListar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnCadastrar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnEditar)
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(btnExcluir))
             .addGroup(jPanel1Layout.createSequentialGroup()
-                .addContainerGap()
-                .addComponent(jScrollPane1)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnListar)
+                        .addGap(12, 12, 12)
+                        .addComponent(btnExcluir))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(jScrollPane1, javax.swing.GroupLayout.DEFAULT_SIZE, 717, Short.MAX_VALUE)))
                 .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
@@ -142,8 +129,6 @@ public class ListagemAlunosView extends javax.swing.JInternalFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(btnExcluir)
-                    .addComponent(btnEditar)
-                    .addComponent(btnCadastrar)
                     .addComponent(btnListar))
                 .addContainerGap(18, Short.MAX_VALUE))
         );
@@ -170,61 +155,32 @@ public class ListagemAlunosView extends javax.swing.JInternalFrame {
 
     private void btnListarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnListarActionPerformed
         // TODO add your handling code here:
-        controller.listarAlunos((DefaultTableModel) tblDados.getModel());
+        controller.listarAlunos((DefaultTableModel) tblDados.getModel(), codAluno);
     }//GEN-LAST:event_btnListarActionPerformed
-
+    
+     public void conectarBanco() {
+        try {
+            connection = ConnectionFactory.getConnection();
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
+    }
+    
+    
     private void formInternalFrameActivated(javax.swing.event.InternalFrameEvent evt) {//GEN-FIRST:event_formInternalFrameActivated
         // TODO add your handling code here:
-        controller.listarAlunos((DefaultTableModel) tblDados.getModel());
+        controller.listarAlunos((DefaultTableModel) tblDados.getModel(), codAluno);
     }//GEN-LAST:event_formInternalFrameActivated
-
-    private void btnCadastrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCadastrarActionPerformed
-        // TODO add your handling code here:
-        CadastrarAlunoView tela = new CadastrarAlunoView(connection, null);
-        this.getParent().add(tela);
-        tela.setVisible(true);
-    }//GEN-LAST:event_btnCadastrarActionPerformed
-
-    private void btnEditarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarActionPerformed
-        // TODO add your handling code here:
-        if (tblDados.getSelectedRow() != -1) {
-            Aluno aluno = new Aluno();
-            aluno.setCodigoAluno(Integer.parseInt(tblDados.getValueAt(tblDados.getSelectedRow(), 0).toString()));
-            aluno = controller.buscarAlunoByAluno(aluno.getCodigoAluno());
-
-            CadastrarAlunoView tela = new CadastrarAlunoView(connection, aluno);
-            this.getParent().add(tela);
-            tela.setVisible(true);
-
-        } else {
-            JOptionPane.showMessageDialog(null, "Por favor selecione um aluno.", "Atenção", JOptionPane.WARNING_MESSAGE);
-        }
-    }//GEN-LAST:event_btnEditarActionPerformed
 
     private void btnExcluirActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnExcluirActionPerformed
         // TODO add your handling code here:
-        if (tblDados.getSelectedRow() != -1) {
-            Aluno aluno = new Aluno();
-            aluno.setCodigoAluno(Integer.parseInt(tblDados.getValueAt(tblDados.getSelectedRow(), 0).toString()));
-            if (!controller.verificarVinculoAlunoMatricula(aluno)) {
-                if (controller.deletarAluno(Integer.parseInt(tblDados.getValueAt(tblDados.getSelectedRow(), 0).toString()))) {
-                    JOptionPane.showMessageDialog(null, "Aluno excluído com sucesso.", "Atenção", JOptionPane.INFORMATION_MESSAGE);
-                    controller.listarAlunos((DefaultTableModel) tblDados.getModel());
-                } else {
-                    JOptionPane.showMessageDialog(null, "Erro ao excluir aluno.", "Atenção", JOptionPane.ERROR_MESSAGE);
-                }
-            } else {
-                JOptionPane.showMessageDialog(null, "Erro ao excluir aluno. O aluno está matriculado.", "Atenção", JOptionPane.ERROR_MESSAGE);
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "Por favor selecione um aluno.", "Atenção", JOptionPane.WARNING_MESSAGE);
-        }
+        ControleDeAlunosView cdav = new ControleDeAlunosView();
+        this.getParent().setVisible(false);
+        cdav.setVisible(true);
     }//GEN-LAST:event_btnExcluirActionPerformed
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JButton btnCadastrar;
-    private javax.swing.JButton btnEditar;
     private javax.swing.JButton btnExcluir;
     private javax.swing.JButton btnListar;
     private javax.swing.JPanel jPanel1;

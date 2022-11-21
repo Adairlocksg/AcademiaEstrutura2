@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 
 <Form version="1.5" maxVersion="1.9" type="org.netbeans.modules.form.forminfo.JFrameFormInfo">
-  <NonVisualComponents>
-    <Component class="javax.swing.JSpinner" name="jSpinner1">
-    </Component>
-  </NonVisualComponents>
   <Properties>
     <Property name="defaultCloseOperation" type="int" value="3"/>
   </Properties>
@@ -32,6 +28,7 @@
               <Group type="103" groupAlignment="0" attributes="0">
                   <Component id="FotoUsuario" max="32767" attributes="0"/>
                   <Component id="jTableAssiduidade" pref="0" max="32767" attributes="0"/>
+                  <Component id="jData" alignment="0" max="32767" attributes="0"/>
               </Group>
               <EmptySpace type="separate" max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" max="-2" attributes="0">
@@ -75,6 +72,7 @@
               <Group type="103" groupAlignment="3" attributes="0">
                   <Component id="jButtonAcessarDadosAluno" alignment="3" min="-2" pref="37" max="-2" attributes="0"/>
                   <Component id="jButtonAcessarDadosMatricula" alignment="3" min="-2" pref="37" max="-2" attributes="0"/>
+                  <Component id="jData" alignment="3" min="-2" max="-2" attributes="0"/>
               </Group>
               <EmptySpace max="-2" attributes="0"/>
               <Group type="103" groupAlignment="0" attributes="0">
@@ -187,6 +185,10 @@
       <Properties>
         <Property name="text" type="java.lang.String" value="Acessar dados do Aluno"/>
       </Properties>
+      <Events>
+        <EventHandler event="mouseClicked" listener="java.awt.event.MouseListener" parameters="java.awt.event.MouseEvent" handler="jButtonAcessarDadosAlunoMouseClicked"/>
+        <EventHandler event="actionPerformed" listener="java.awt.event.ActionListener" parameters="java.awt.event.ActionEvent" handler="jButtonAcessarDadosAlunoActionPerformed"/>
+      </Events>
     </Component>
     <Component class="javax.swing.JButton" name="jButtonAcessarDadosMatricula">
       <Properties>
@@ -271,5 +273,10 @@
         </Component>
       </SubComponents>
     </Container>
+    <Component class="javax.swing.JTextField" name="jData">
+      <Properties>
+        <Property name="horizontalAlignment" type="int" value="0"/>
+      </Properties>
+    </Component>
   </SubComponents>
 </Form>

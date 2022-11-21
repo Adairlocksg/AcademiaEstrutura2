@@ -7,6 +7,7 @@ package com.estruturadados.academia.controller;
 import com.estruturadados.academia.database.dao.AlunoDAO;
 import com.estruturadados.academia.database.dao.MatriculaDAO;
 import com.estruturadados.academia.database.model.Aluno;
+import com.estruturadados.academia.database.model.AlunoGeral;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.SimpleDateFormat;
@@ -25,27 +26,6 @@ public class ListagemAlunosViewController {
 
     public ListagemAlunosViewController(Connection connection) {
         this.connection = connection;
-    }
-
-    public void listarAlunos(DefaultTableModel modeloTabela) {
-        try {
-            AlunoDAO alunoDAO = new AlunoDAO(connection);
-            List<Aluno> listaAlunos = alunoDAO.Select();
-
-            if (listaAlunos != null) {
-                modeloTabela.setRowCount(0);
-
-                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-
-                for (Aluno a : listaAlunos) {
-                    Object[] dados = {a.getCodigoAluno(), a.getAluno(), sdf.format(a.getDataNascimento()), a.getCidade().getCidade()};
-                    modeloTabela.addRow(dados);
-                }
-            }
-
-        } catch (SQLException ex) {
-            ex.printStackTrace();
-        }
     }
 
     public List<Aluno> buscarAlunos() {
@@ -91,5 +71,31 @@ public class ListagemAlunosViewController {
         }
         
         return false;
+    }
+    
+    public void listarAlunos(DefaultTableModel modeloTabela, int cod_aluno) {
+        try {
+            AlunoDAO alunoDAO = new AlunoDAO(connection);
+            List<AlunoGeral> listarAlunos = alunoDAO.SelectByCodAluno(cod_aluno);
+
+            if (listarAlunos != null) {
+                modeloTabela.setRowCount(0);
+
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+
+                for (AlunoGeral ag : listarAlunos) {
+                    if (ag.getDataFim() == null){
+                        Object[] dados = {ag.getCodigoAluno(), ag.getAluno(), ag.getModalidade(), ag.getGraduacao(), ag.getPlano(), sdf.format(ag.getDataInicio())};
+                        modeloTabela.addRow(dados);
+                    }else{
+                    Object[] dados = {ag.getCodigoAluno(), ag.getAluno(), ag.getModalidade(), ag.getGraduacao(), ag.getPlano(), sdf.format(ag.getDataInicio()), sdf.format(ag.getDataFim())};
+                    modeloTabela.addRow(dados);
+                    }
+                 }
+            }
+
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        }
     }
 }

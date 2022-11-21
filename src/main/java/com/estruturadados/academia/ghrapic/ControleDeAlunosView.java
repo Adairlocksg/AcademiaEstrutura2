@@ -13,13 +13,18 @@ import com.estruturadados.academia.database.dao.MatriculaModalidadeDAO;
 import com.estruturadados.academia.database.model.Usuario;
 import com.estruturadados.academia.database.model.Aluno;
 import java.awt.Color;
+import java.awt.Desktop;
 import java.awt.Graphics;
 import java.awt.event.KeyEvent;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.swing.JDesktopPane;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 
@@ -32,6 +37,7 @@ public class ControleDeAlunosView extends javax.swing.JFrame {
     private Connection connection;
     private Usuario usuario;
     private ControleDeAlunosViewController controller;
+    private int codAluno; 
     /**
      * Creates new form ControleDeAlunosView
      */
@@ -40,6 +46,7 @@ public class ControleDeAlunosView extends javax.swing.JFrame {
         this.conectarBanco();
         controller = new ControleDeAlunosViewController(connection);
         jCodigoNomeAluno.setEnabled(false);
+        jData.setEnabled(false);
         usuario = new Usuario();
     }
 
@@ -52,7 +59,6 @@ public class ControleDeAlunosView extends javax.swing.JFrame {
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
 
-        jSpinner1 = new javax.swing.JSpinner();
         FotoUsuario = new javax.swing.JPanel();
         txtCodigoAluno = new javax.swing.JTextField();
         jTableModalidade = new javax.swing.JScrollPane();
@@ -65,6 +71,7 @@ public class ControleDeAlunosView extends javax.swing.JFrame {
         jTableFaturasColumns = new javax.swing.JTable();
         jTableAssiduidade = new javax.swing.JScrollPane();
         jTableAssiduidadeColumns = new javax.swing.JTable();
+        jData = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -118,6 +125,16 @@ public class ControleDeAlunosView extends javax.swing.JFrame {
         });
 
         jButtonAcessarDadosAluno.setText("Acessar dados do Aluno");
+        jButtonAcessarDadosAluno.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                jButtonAcessarDadosAlunoMouseClicked(evt);
+            }
+        });
+        jButtonAcessarDadosAluno.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                jButtonAcessarDadosAlunoActionPerformed(evt);
+            }
+        });
 
         jButtonAcessarDadosMatricula.setText("Acessar dados da Matricula");
 
@@ -152,6 +169,8 @@ public class ControleDeAlunosView extends javax.swing.JFrame {
         ));
         jTableAssiduidade.setViewportView(jTableAssiduidadeColumns);
 
+        jData.setHorizontalAlignment(javax.swing.JTextField.CENTER);
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -160,7 +179,8 @@ public class ControleDeAlunosView extends javax.swing.JFrame {
                 .addContainerGap()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(FotoUsuario, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                    .addComponent(jTableAssiduidade, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
+                    .addComponent(jTableAssiduidade, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
+                    .addComponent(jData))
                 .addGap(18, 18, 18)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
                     .addComponent(jTableFaturas, javax.swing.GroupLayout.DEFAULT_SIZE, 540, Short.MAX_VALUE)
@@ -194,7 +214,8 @@ public class ControleDeAlunosView extends javax.swing.JFrame {
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jButtonAcessarDadosAluno, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jButtonAcessarDadosMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jButtonAcessarDadosMatricula, javax.swing.GroupLayout.PREFERRED_SIZE, 37, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jData, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(jTableAssiduidade, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)
@@ -207,17 +228,21 @@ public class ControleDeAlunosView extends javax.swing.JFrame {
 
     private void txtCodigoAlunoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodigoAlunoActionPerformed
         // TODO add your handling code here:
+        
     }//GEN-LAST:event_txtCodigoAlunoActionPerformed
-
+    
     private void txtCodigoAlunoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoAlunoKeyPressed
         // TODO add your handling code here:
         if(evt.getKeyCode() == KeyEvent.VK_ENTER){
             try {
-                
+                SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
                 AlunoDAO alunoDAO = new AlunoDAO(connection);
                 Aluno aluno = alunoDAO.SelectWithCondition(txtCodigoAluno.getText());
-                
+                codAluno = aluno.getCodigoAluno();
+                Date todayDate = new Date();
                 jCodigoNomeAluno.setText(aluno.getCodigoAluno() + " - " + aluno.getAluno());
+                
+                jData.setText(sdf.format(todayDate));
                 controller.listarModalidadesMatriculas((DefaultTableModel) jTableModalidadeColumns.getModel(),aluno.getCodigoAluno());
                 controller.listarFaturas((DefaultTableModel) jTableFaturasColumns.getModel(),aluno.getCodigoAluno());
                 controller.VerificaSituacaoRegular(jSituacao, aluno.getCodigoAluno());
@@ -235,6 +260,21 @@ public class ControleDeAlunosView extends javax.swing.JFrame {
     private void jSituacaoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jSituacaoActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_jSituacaoActionPerformed
+
+    private void jButtonAcessarDadosAlunoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButtonAcessarDadosAlunoActionPerformed
+        // TODO add your handling code here:
+        
+        ListagemAlunosView listagemAlunosView = new ListagemAlunosView(codAluno);
+        JDesktopPane desk = new JDesktopPane();
+        this.setContentPane(desk);
+        desk.add(listagemAlunosView);
+        listagemAlunosView.setVisible(true);
+        
+    }//GEN-LAST:event_jButtonAcessarDadosAlunoActionPerformed
+
+    private void jButtonAcessarDadosAlunoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_jButtonAcessarDadosAlunoMouseClicked
+
+    }//GEN-LAST:event_jButtonAcessarDadosAlunoMouseClicked
     
     public void conectarBanco() {
         try {
@@ -291,8 +331,8 @@ public class ControleDeAlunosView extends javax.swing.JFrame {
     private javax.swing.JButton jButtonAcessarDadosAluno;
     private javax.swing.JButton jButtonAcessarDadosMatricula;
     private javax.swing.JTextField jCodigoNomeAluno;
+    private javax.swing.JTextField jData;
     private javax.swing.JTextField jSituacao;
-    private javax.swing.JSpinner jSpinner1;
     private javax.swing.JScrollPane jTableAssiduidade;
     private javax.swing.JTable jTableAssiduidadeColumns;
     private javax.swing.JScrollPane jTableFaturas;
